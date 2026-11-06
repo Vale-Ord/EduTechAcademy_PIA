@@ -11,6 +11,15 @@ from src.domain.excepciones import (
     TransicionInvalida,
 )
 
+MENSAJES = {
+    NoEncontrado: "No encontramos lo que buscas. Revisa que el identificador sea correcto.",
+    PermisoDenegado: "Tu rol no tiene permiso para realizar esta acción.",
+    TransicionInvalida: "Esta acción no se puede realizar con el estado actual de la solicitud.",
+    CupoAgotado: "El programa no tiene lugares suficientes para esta solicitud.",
+    ReglaNoCumplida: "La solicitud no cumple las reglas de negocio. Revisa los motivos indicados.",
+    CantidadInvalida: "Alguno de los valores enviados está fuera del rango permitido.",
+}
+
 CODIGOS = [
     (NoEncontrado, 404),        # recurso inexistente
     (PermisoDenegado, 403),     # RB-14
@@ -23,8 +32,9 @@ CODIGOS = [
 
 def registrar_manejadores(app: FastAPI) -> None:
     for excepcion, codigo in CODIGOS:
-        def _handler(request: Request, exc, _codigo=codigo):
-            detalle = {"error": type(exc).__name__, "detalle": str(exc)}
+        def _handler(request: Request, exc, _codigo=codigo, _mensaje=MENSAJES[excepcion]):
+            detalle = {"error": type(exc).__name__, "detalle": str(exc),
+                       "mensaje": _mensaje}
             if isinstance(exc, ReglaNoCumplida):
                 detalle["motivos"] = exc.motivos
             return JSONResponse(status_code=_codigo, content=detalle)

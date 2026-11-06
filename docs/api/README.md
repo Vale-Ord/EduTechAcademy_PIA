@@ -22,3 +22,8 @@
 | `PUT /solicitudes/{id}/resultado` | instructor | 200 | 403, 404, 422 |
 | `GET /solicitudes/{id}/certificacion` | estudiante, control_escolar | 200 | 403, 404 |
 | `POST /admin/seed` | control_escolar | 200 | 403 |
+
+## Mensajes en las respuestas
+- Las respuestas de solicitudes, validación, beneficio, certificación, `/health` y `/admin/seed` incluyen un campo `mensaje` con una explicación en lenguaje claro del proceso realizado y el siguiente paso.
+- Los errores de negocio devuelven `error`, `detalle` y `mensaje` (y `motivos` en 422).
+- Las listas (`GET /programas`, `GET /solicitudes`, `/eventos`) no llevan `mensaje` para no cambiar su formato; su explicación está en la descripción de cada endpoint en Swagger.

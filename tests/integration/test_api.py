@@ -124,7 +124,7 @@ def test_validacion_y_beneficio(client):
     v = client.get(f"/solicitudes/{sid}/validacion", headers=CE).json()
     assert v["cumple"] is True
     b = client.get(f"/solicitudes/{sid}/beneficio", headers=CE).json()
-    assert set(b) == {"solicitud_id", "aplica", "total", "motivos"}
+    assert set(b) == {"solicitud_id", "aplica", "total", "motivos", "mensaje"}
 
 
 def test_resultado_antes_de_inscribir_422(client):
@@ -145,4 +145,5 @@ def test_filtros_de_solicitudes_pagos_pendientes(client):  # US-03, US-15
 def test_cancelar_y_seed_idempotente(client):
     sid = nueva(client).json()["id"]
     assert client.post(f"/solicitudes/{sid}/cancelar", headers=CE).json()["estado"] == "CANCELADA"
-    assert client.post("/admin/seed", headers=CE).json() == {"sembrada": False}
+    seed = client.post("/admin/seed", headers=CE).json()
+    assert seed["sembrada"] is False and seed["mensaje"]

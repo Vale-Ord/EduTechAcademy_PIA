@@ -49,6 +49,7 @@ class SolicitudOut(BaseModel):
     acciones_permitidas: list[str]
     calificacion_final: Decimal | None = None
     asistencia: Decimal | None = None
+    mensaje: str = Field(default="", description="Mensaje en lenguaje claro sobre lo que ocurrió y cuál es el siguiente paso")
 
 
 class ProgramaOut(BaseModel):
@@ -65,6 +66,7 @@ class ValidacionOut(BaseModel):
     solicitud_id: str
     cumple: bool
     motivos: list[str]
+    mensaje: str = Field(default="", description="Mensaje en lenguaje claro sobre lo que ocurrió y cuál es el siguiente paso")
 
 
 class BeneficioOut(BaseModel):
@@ -72,15 +74,37 @@ class BeneficioOut(BaseModel):
     aplica: bool
     total: Decimal
     motivos: list[str]
+    mensaje: str = Field(default="", description="Mensaje en lenguaje claro sobre lo que ocurrió y cuál es el siguiente paso")
 
 
 class CertificacionOut(BaseModel):
     solicitud_id: str
     estado: str
     motivo: str | None = None
+    mensaje: str = Field(default="", description="Mensaje en lenguaje claro sobre lo que ocurrió y cuál es el siguiente paso")
 
 
 class EventoOut(BaseModel):
     evento: str
     solicitud_id: str
     ocurrido_en: str
+
+
+class HealthOut(BaseModel):
+    status: str = Field(examples=["ok"])
+    entorno: str = Field(examples=["production"])
+    mensaje: str = Field(examples=["El servicio está funcionando correctamente."])
+
+
+class SeedOut(BaseModel):
+    sembrada: bool = Field(description="true si se cargaron los datos; false si la base ya tenía información")
+    mensaje: str
+
+
+class ErrorOut(BaseModel):
+    """Formato de todos los errores de negocio de la API."""
+
+    error: str = Field(examples=["TransicionInvalida"], description="Tipo técnico del error")
+    detalle: str = Field(description="Detalle técnico")
+    mensaje: str = Field(description="Explicación en lenguaje claro para el usuario")
+    motivos: list[str] | None = Field(default=None, description="Reglas que no se cumplieron (solo en 422)")
