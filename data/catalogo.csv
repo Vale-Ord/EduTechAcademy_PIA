@@ -1,0 +1,21 @@
+﻿recurso_id,descripcion,precio_mxn,capacidad_o_stock,habilitado
+EDU-P001,Cloud 01,566.00,13,1
+EDU-P002,Data Science 02,637.00,16,1
+EDU-P003,Ciberseguridad 03,708.00,19,1
+EDU-P004,Desarrollo Web 04,779.00,22,1
+EDU-P005,Cloud 05,850.00,25,1
+EDU-P006,Data Science 06,921.00,28,1
+EDU-P007,Ciberseguridad 07,992.00,31,1
+EDU-P008,Desarrollo Web 08,1063.00,34,1
+EDU-P009,Cloud 09,1134.00,37,1
+EDU-P010,Data Science 10,1205.00,40,1
+EDU-P011,Ciberseguridad 11,1276.00,43,0
+EDU-P012,Desarrollo Web 12,1347.00,46,1
+EDU-P013,Cloud 13,1418.00,49,1
+EDU-P014,Data Science 14,1489.00,52,1
+EDU-P015,Ciberseguridad 15,1560.00,10,1
+EDU-P016,Desarrollo Web 16,1631.00,13,1
+EDU-P017,Cloud 17,1702.00,16,1
+EDU-P018,Data Science 18,1773.00,19,1
+EDU-P019,Ciberseguridad 19,1844.00,22,1
+EDU-P020,Desarrollo Web 20,1915.00,25,1

@@ -1,0 +1,21 @@
+﻿caso_id,operacion_id,accion_sugerida,estado_inicial,resultado_alumno,instrucciones,estado_final,resultado,evidencia
+EDU-S001,EDU-O001,completar,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,SOLICITADA,EXCEPCION TransicionInvalida (HTTP 409),No se puede 'completar' una solicitud en estado SOLICITADA
+EDU-S002,EDU-O002,cancelar,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,CANCELADA,OK,eventos: SolicitudCancelada
+EDU-S003,EDU-O003,repetir_aprobacion,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,ACEPTADA,EXCEPCION TransicionInvalida (HTTP 409),No se puede 'aprobar' una solicitud en estado ACEPTADA
+EDU-S004,EDU-O004,saltar_estado,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,SOLICITADA,EXCEPCION TransicionInvalida (HTTP 409),No se puede 'inscribir' una solicitud en estado SOLICITADA
+EDU-S005,EDU-O005,aprobar,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,SOLICITADA,EXCEPCION ReglaNoCumplida (HTTP 422),todos los programas habilitados
+EDU-S006,EDU-O006,completar,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,SOLICITADA,EXCEPCION TransicionInvalida (HTTP 409),No se puede 'completar' una solicitud en estado SOLICITADA
+EDU-S007,EDU-O007,cancelar,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,CANCELADA,OK,eventos: SolicitudCancelada
+EDU-S008,EDU-O008,repetir_aprobacion,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,SOLICITADA,EXCEPCION ReglaNoCumplida (HTTP 422),solicitud autorizada
+EDU-S009,EDU-O009,saltar_estado,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,SOLICITADA,EXCEPCION TransicionInvalida (HTTP 409),No se puede 'inscribir' una solicitud en estado SOLICITADA
+EDU-S010,EDU-O010,aprobar,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,ACEPTADA,OK,eventos: SolicitudAceptada
+EDU-S011,EDU-O011,completar,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,SOLICITADA,EXCEPCION TransicionInvalida (HTTP 409),No se puede 'completar' una solicitud en estado SOLICITADA
+EDU-S012,EDU-O012,cancelar,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,CANCELADA,OK,eventos: SolicitudCancelada
+EDU-S013,EDU-O013,repetir_aprobacion,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,SOLICITADA,EXCEPCION ReglaNoCumplida (HTTP 422),solicitud con al menos un renglón
+EDU-S014,EDU-O014,saltar_estado,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,SOLICITADA,EXCEPCION TransicionInvalida (HTTP 409),No se puede 'inscribir' una solicitud en estado SOLICITADA
+EDU-S015,EDU-O015,aprobar,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,SOLICITADA,EXCEPCION ReglaNoCumplida (HTTP 422),todos los programas habilitados
+EDU-S016,EDU-O016,completar,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,SOLICITADA,EXCEPCION TransicionInvalida (HTTP 409),No se puede 'completar' una solicitud en estado SOLICITADA
+EDU-S017,EDU-O017,cancelar,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,CANCELADA,OK,eventos: SolicitudCancelada
+EDU-S018,EDU-O018,repetir_aprobacion,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,ACEPTADA,EXCEPCION TransicionInvalida (HTTP 409),No se puede 'aprobar' una solicitud en estado ACEPTADA
+EDU-S019,EDU-O019,saltar_estado,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,SOLICITADA,EXCEPCION TransicionInvalida (HTTP 409),No se puede 'inscribir' una solicitud en estado SOLICITADA
+EDU-S020,EDU-O020,aprobar,SOLICITADA,PENDIENTE,Ejecutar la operacion y registrar evento o excepcion,SOLICITADA,EXCEPCION ReglaNoCumplida (HTTP 422),todos los programas habilitados

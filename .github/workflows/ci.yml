@@ -1,0 +1,64 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: edutech
+          POSTGRES_PASSWORD: edutech
+          POSTGRES_DB: edutech
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U edutech" --health-interval 5s
+          --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql+psycopg2://edutech:edutech@localhost:5432/edutech
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - name: Lint (ruff)
+        run: ruff check .
+      - name: Pruebas + cobertura (>= 80%)
+        run: pytest --cov=src --cov-report=term-missing --cov-report=xml --cov-fail-under=80
+      - name: Evidencia de los casos del maestro
+        run: python scripts/ejecutar_casos.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evidencias
+          path: |
+            coverage.xml
+            docs/evidencias/
+  docker:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Construir imagen
+        run: docker build -t edutech-academy .
+
+  deploy:
+    # CD: dispara el despliegue en Render cuando pasan las pruebas en main
+    needs: [test, docker]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy hook de Render
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "Falta el secret RENDER_DEPLOY_HOOK_URL (ver README, sección Despliegue)"; exit 1
+          fi
+          curl -fsS -X POST "$RENDER_DEPLOY_HOOK_URL"

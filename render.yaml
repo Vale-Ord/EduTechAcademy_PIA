@@ -1,0 +1,22 @@
+# Blueprint de Render: crea la base PostgreSQL y el servicio web desde el Dockerfile.
+databases:
+  - name: edutech-db
+    plan: free
+    databaseName: edutech
+    user: edutech
+
+services:
+  - type: web
+    name: edutech-academy-api
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: edutech-db
+          property: connectionString
+      - key: SEED_ON_STARTUP
+        value: "true"
+      - key: APP_ENV
+        value: production
