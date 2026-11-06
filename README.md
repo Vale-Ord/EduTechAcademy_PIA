@@ -4,8 +4,8 @@ Sistema de inscripción, seguimiento y certificación de cursos. Implementa **DD
 
 | | |
 |---|---|
-| **Repositorio** | `https://github.com/<USUARIO>/<REPO>`  ← _completar_ |
-| **Sistema desplegado (Swagger)** | `https://<TU-SERVICIO>.onrender.com/docs`  ← _completar_ |
+| **Repositorio** | https://github.com/Vale-Ord/EduTechAcademy_PIA |
+| **Sistema desplegado (Swagger)** | https://edutech-academy-api-6s0l.onrender.com/docs |
 | **Equipo** | Valeria Ordaz García (2169894) · Luis José Mendoza Serrano (2223173) · Omar Alejandro Salazar Castro (2226576) |
 
 ## Estructura
