@@ -1,0 +1,1343 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "EduTechAcademy API",
+    "description": "\nSistema de **inscripción, seguimiento y certificación** de EduTechAcademy.\n\n* Cada endpoint exige el encabezado `X-Rol` (`estudiante`, `instructor`, `control_escolar`,\n  `administracion`, `cliente_empresarial`) para aplicar los permisos de **RB-14**.\n* Códigos: `200/201` éxito · `400` dato inválido · `403` sin permiso · `404` no existe ·\n  `409` transición inválida o cupo agotado · `422` regla de negocio no cumplida.\n",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "Sistema"
+        ],
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/seed": {
+      "post": {
+        "tags": [
+          "Sistema"
+        ],
+        "summary": "Carga los CSV del maestro si la base está vacía",
+        "operationId": "seed_admin_seed_post",
+        "parameters": [
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/programas": {
+      "get": {
+        "tags": [
+          "Programas"
+        ],
+        "summary": "Listar Programas",
+        "operationId": "listar_programas_programas_get",
+        "parameters": [
+          {
+            "name": "solo_habilitados",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Solo Habilitados"
+            }
+          },
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProgramaOut"
+                  },
+                  "title": "Response Listar Programas Programas Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/programas/{programa_id}": {
+      "get": {
+        "tags": [
+          "Programas"
+        ],
+        "summary": "Obtener Programa",
+        "operationId": "obtener_programa_programas__programa_id__get",
+        "parameters": [
+          {
+            "name": "programa_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Programa Id"
+            }
+          },
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgramaOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/solicitudes": {
+      "post": {
+        "tags": [
+          "Solicitudes"
+        ],
+        "summary": "Crear Solicitud",
+        "operationId": "crear_solicitud_solicitudes_post",
+        "parameters": [
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolicitudIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolicitudOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Solicitudes"
+        ],
+        "summary": "Listar Solicitudes",
+        "operationId": "listar_solicitudes_solicitudes_get",
+        "parameters": [
+          {
+            "name": "actor_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Actor Id"
+            }
+          },
+          {
+            "name": "estado",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "examples": [
+                "ACEPTADA"
+              ],
+              "title": "Estado"
+            }
+          },
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SolicitudOut"
+                  },
+                  "title": "Response Listar Solicitudes Solicitudes Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/solicitudes/{solicitud_id}": {
+      "get": {
+        "tags": [
+          "Solicitudes"
+        ],
+        "summary": "Obtener Solicitud",
+        "operationId": "obtener_solicitud_solicitudes__solicitud_id__get",
+        "parameters": [
+          {
+            "name": "solicitud_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Solicitud Id"
+            }
+          },
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolicitudOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/solicitudes/{solicitud_id}/eventos": {
+      "get": {
+        "tags": [
+          "Solicitudes"
+        ],
+        "summary": "Eventos",
+        "operationId": "eventos_solicitudes__solicitud_id__eventos_get",
+        "parameters": [
+          {
+            "name": "solicitud_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Solicitud Id"
+            }
+          },
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventoOut"
+                  },
+                  "title": "Response Eventos Solicitudes  Solicitud Id  Eventos Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/solicitudes/{solicitud_id}/validacion": {
+      "get": {
+        "tags": [
+          "Reglas"
+        ],
+        "summary": "Validar",
+        "operationId": "validar_solicitudes__solicitud_id__validacion_get",
+        "parameters": [
+          {
+            "name": "solicitud_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Solicitud Id"
+            }
+          },
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidacionOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/solicitudes/{solicitud_id}/beneficio": {
+      "get": {
+        "tags": [
+          "Reglas"
+        ],
+        "summary": "Beneficio",
+        "operationId": "beneficio_solicitudes__solicitud_id__beneficio_get",
+        "parameters": [
+          {
+            "name": "solicitud_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Solicitud Id"
+            }
+          },
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BeneficioOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/solicitudes/{solicitud_id}/aprobar": {
+      "post": {
+        "tags": [
+          "Transiciones"
+        ],
+        "summary": "Aprobar",
+        "operationId": "aprobar_solicitudes__solicitud_id__aprobar_post",
+        "parameters": [
+          {
+            "name": "solicitud_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Solicitud Id"
+            }
+          },
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolicitudOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/solicitudes/{solicitud_id}/pago": {
+      "post": {
+        "tags": [
+          "Transiciones"
+        ],
+        "summary": "Pagar",
+        "operationId": "pagar_solicitudes__solicitud_id__pago_post",
+        "parameters": [
+          {
+            "name": "solicitud_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Solicitud Id"
+            }
+          },
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagoIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolicitudOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/solicitudes/{solicitud_id}/completar": {
+      "post": {
+        "tags": [
+          "Transiciones"
+        ],
+        "summary": "Completar",
+        "operationId": "completar_solicitudes__solicitud_id__completar_post",
+        "parameters": [
+          {
+            "name": "solicitud_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Solicitud Id"
+            }
+          },
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolicitudOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/solicitudes/{solicitud_id}/cancelar": {
+      "post": {
+        "tags": [
+          "Transiciones"
+        ],
+        "summary": "Cancelar",
+        "operationId": "cancelar_solicitudes__solicitud_id__cancelar_post",
+        "parameters": [
+          {
+            "name": "solicitud_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Solicitud Id"
+            }
+          },
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolicitudOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/solicitudes/{solicitud_id}/resultado": {
+      "put": {
+        "tags": [
+          "Certificación"
+        ],
+        "summary": "Resultado",
+        "operationId": "resultado_solicitudes__solicitud_id__resultado_put",
+        "parameters": [
+          {
+            "name": "solicitud_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Solicitud Id"
+            }
+          },
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResultadoAcademicoIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolicitudOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/solicitudes/{solicitud_id}/certificacion": {
+      "get": {
+        "tags": [
+          "Certificación"
+        ],
+        "summary": "Certificacion",
+        "operationId": "certificacion_solicitudes__solicitud_id__certificacion_get",
+        "parameters": [
+          {
+            "name": "solicitud_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Solicitud Id"
+            }
+          },
+          {
+            "name": "x-rol",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Rol del usuario (RB-14)",
+              "default": "control_escolar",
+              "title": "X-Rol"
+            },
+            "description": "Rol del usuario (RB-14)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CertificacionOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BeneficioOut": {
+        "properties": {
+          "solicitud_id": {
+            "type": "string",
+            "title": "Solicitud Id"
+          },
+          "aplica": {
+            "type": "boolean",
+            "title": "Aplica"
+          },
+          "total": {
+            "type": "string",
+            "title": "Total"
+          },
+          "motivos": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Motivos"
+          }
+        },
+        "type": "object",
+        "required": [
+          "solicitud_id",
+          "aplica",
+          "total",
+          "motivos"
+        ],
+        "title": "BeneficioOut"
+      },
+      "CertificacionOut": {
+        "properties": {
+          "solicitud_id": {
+            "type": "string",
+            "title": "Solicitud Id"
+          },
+          "estado": {
+            "type": "string",
+            "title": "Estado"
+          },
+          "motivo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivo"
+          }
+        },
+        "type": "object",
+        "required": [
+          "solicitud_id",
+          "estado"
+        ],
+        "title": "CertificacionOut"
+      },
+      "EventoOut": {
+        "properties": {
+          "evento": {
+            "type": "string",
+            "title": "Evento"
+          },
+          "solicitud_id": {
+            "type": "string",
+            "title": "Solicitud Id"
+          },
+          "ocurrido_en": {
+            "type": "string",
+            "title": "Ocurrido En"
+          }
+        },
+        "type": "object",
+        "required": [
+          "evento",
+          "solicitud_id",
+          "ocurrido_en"
+        ],
+        "title": "EventoOut"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "PagoIn": {
+        "properties": {
+          "monto": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Monto",
+            "description": "Debe ser igual al total (RB-03)",
+            "examples": [
+              "1500.00"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "monto"
+        ],
+        "title": "PagoIn"
+      },
+      "ProgramaOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "descripcion": {
+            "type": "string",
+            "title": "Descripcion"
+          },
+          "precio_mxn": {
+            "type": "string",
+            "title": "Precio Mxn"
+          },
+          "capacidad": {
+            "type": "integer",
+            "title": "Capacidad"
+          },
+          "ocupados": {
+            "type": "integer",
+            "title": "Ocupados"
+          },
+          "disponibles": {
+            "type": "integer",
+            "title": "Disponibles"
+          },
+          "habilitado": {
+            "type": "boolean",
+            "title": "Habilitado"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "descripcion",
+          "precio_mxn",
+          "capacidad",
+          "ocupados",
+          "disponibles",
+          "habilitado"
+        ],
+        "title": "ProgramaOut"
+      },
+      "RenglonIn": {
+        "properties": {
+          "programa_id": {
+            "type": "string",
+            "title": "Programa Id",
+            "examples": [
+              "EDU-P001"
+            ]
+          },
+          "cantidad": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Cantidad",
+            "description": "Lugares solicitados (> 0)",
+            "examples": [
+              2
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "programa_id",
+          "cantidad"
+        ],
+        "title": "RenglonIn"
+      },
+      "RenglonOut": {
+        "properties": {
+          "programa_id": {
+            "type": "string",
+            "title": "Programa Id"
+          },
+          "cantidad": {
+            "type": "integer",
+            "title": "Cantidad"
+          },
+          "precio_unitario": {
+            "type": "string",
+            "title": "Precio Unitario"
+          },
+          "subtotal": {
+            "type": "string",
+            "title": "Subtotal"
+          }
+        },
+        "type": "object",
+        "required": [
+          "programa_id",
+          "cantidad",
+          "precio_unitario",
+          "subtotal"
+        ],
+        "title": "RenglonOut"
+      },
+      "ResultadoAcademicoIn": {
+        "properties": {
+          "calificacion": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Calificacion",
+            "examples": [
+              "85"
+            ]
+          },
+          "asistencia": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Asistencia",
+            "examples": [
+              "90"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "calificacion",
+          "asistencia"
+        ],
+        "title": "ResultadoAcademicoIn"
+      },
+      "SolicitudIn": {
+        "properties": {
+          "actor_id": {
+            "type": "string",
+            "title": "Actor Id",
+            "description": "Id del alumno",
+            "examples": [
+              "EDU-C005"
+            ]
+          },
+          "renglones": {
+            "items": {
+              "$ref": "#/components/schemas/RenglonIn"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Renglones"
+          },
+          "promocion_activa": {
+            "type": "boolean",
+            "title": "Promocion Activa",
+            "default": false
+          },
+          "autorizado": {
+            "type": "boolean",
+            "title": "Autorizado",
+            "default": true
+          },
+          "referencia": {
+            "type": "string",
+            "title": "Referencia",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "actor_id",
+          "renglones"
+        ],
+        "title": "SolicitudIn"
+      },
+      "SolicitudOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "actor_id": {
+            "type": "string",
+            "title": "Actor Id"
+          },
+          "estado": {
+            "type": "string",
+            "title": "Estado"
+          },
+          "fecha_solicitud": {
+            "type": "string",
+            "format": "date",
+            "title": "Fecha Solicitud"
+          },
+          "total": {
+            "type": "string",
+            "title": "Total"
+          },
+          "promocion_activa": {
+            "type": "boolean",
+            "title": "Promocion Activa"
+          },
+          "autorizado": {
+            "type": "boolean",
+            "title": "Autorizado"
+          },
+          "referencia": {
+            "type": "string",
+            "title": "Referencia"
+          },
+          "renglones": {
+            "items": {
+              "$ref": "#/components/schemas/RenglonOut"
+            },
+            "type": "array",
+            "title": "Renglones"
+          },
+          "acciones_permitidas": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Acciones Permitidas"
+          },
+          "calificacion_final": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calificacion Final"
+          },
+          "asistencia": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Asistencia"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "actor_id",
+          "estado",
+          "fecha_solicitud",
+          "total",
+          "promocion_activa",
+          "autorizado",
+          "referencia",
+          "renglones",
+          "acciones_permitidas"
+        ],
+        "title": "SolicitudOut"
+      },
+      "ValidacionOut": {
+        "properties": {
+          "solicitud_id": {
+            "type": "string",
+            "title": "Solicitud Id"
+          },
+          "cumple": {
+            "type": "boolean",
+            "title": "Cumple"
+          },
+          "motivos": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Motivos"
+          }
+        },
+        "type": "object",
+        "required": [
+          "solicitud_id",
+          "cumple",
+          "motivos"
+        ],
+        "title": "ValidacionOut"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
